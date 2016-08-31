@@ -1,0 +1,53 @@
+recover.php能监听signal_server的添加和删除节点动作，并且打印信令服务器的在zk中的名字
+===============
+zookeeper单机模式下的znode存储规则：
+---
+[zk: localhost:2181(CONNECTED) 1] ls /
+[test, zookeeper, signal_server, media_server, test123]
+
+[zk: localhost:2181(CONNECTED) 4] ls /signal_server
+[sig1_1.1.1.1_:_port, sig4_4.4.4.4_:_port, sig3_3.3.3.3_:_port, sig2_2.2.2.2_:_port]
+
+[zk: localhost:2181(CONNECTED) 5] ls /media_server
+[med1_1.1.1.1_:_port, med3_3.3.3.3_:_port, med2_2.2.2.2_:_port, med4_4.4.4.4_:_port]
+
+可以看出每台signal server在zookeeper中的节点名字为sigx_ip_:_port
+例如：sig1_1.1.1.1_:_port
+
+==============
+运行方式：
+1，安装配置php5，
+2，安装配置nginx，打开nginx
+3，安装配置zookeeper，在zookeeper添加临时数据
+
+php recover.php
+
+结果如下：
+
+root@lizhen:/usr/local/nginx/html# php recover.php 
+<html>
+<body>
+	<p>test.php: welcome to visit dispatcher server</p>
+</body>
+</html>
+
+begin====
+singal_server<br>
+media_server<br>
+record_server<br>
+N-signal_server
+array(4) {
+  [0]=>
+  string(19) "sig1_1.1.1.1_:_port"
+  [1]=>
+  string(19) "sig4_4.4.4.4_:_port"
+  [2]=>
+  string(19) "sig3_3.3.3.3_:_port"
+  [3]=>
+  string(19) "sig2_2.2.2.2_:_port"
+}
+/signal_server/sig1_1.1.1.1_:_port
+/signal_server/sig4_4.4.4.4_:_port
+/signal_server/sig3_3.3.3.3_:_port
+/signal_server/sig2_2.2.2.2_:_port
+........^C
